@@ -17,18 +17,15 @@ import matplotlib.pyplot as plt
 # In[2]:
 
 
-stocks = [
-  "XLY", "VCR", "CMG", "CZR", "SONY", "TM", "TSLA",
-  "XLF", "VFH", "BLK", "GS", "ICE", "LAZ", "MS", "OPY", "PYPL", "UBS",
-  "VHT", "XLV", "HBIO", "ILMN", "IQV", "MCK", "REGN",
-  "AIQ", "SMH", "VGT", "AMD", "ASML", "CRM", "INTU", "MSFT", "NOW", "NVDA", "PLTR", "SNOW", "ARM",
-  "QQQ", "SCHD", "VYM", "VIG"]
+stocks = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","REGN","ASML","MSFT","NOW","SNOW","SPY"]
+
+
 
 # stocks = ["HDFCBANK.NS", "ICICIBANK.NS", "AXISBANK.NS", "SBIN.NS"]
 
 #Any random number of stocks can be added or dropped(Make sure to also edit portfoliostd function accordingly)
 
-stocks = yf.download(stocks, start = "2009-01-01", end = "2024-10-02")
+stocks = yf.download(stocks, start = "2023-01-01", end = "2024-10-02")
 #Start and End time can be configured
 
 
@@ -87,7 +84,7 @@ returns = []
 stds = []
 w = []
 
-for i in range(1000): #Use the number of iterations you seem fit
+for i in range(10000): #Use the number of iterations you seem fit
     print(i)
     weights = weightscreator(stocks_lr)
     returns.append(portfolioreturn(weights))
@@ -105,16 +102,12 @@ for i in range(1000): #Use the number of iterations you seem fit
 
 # In[9]:
 
-
-print("Max return =", max(returns))
-print("Corresponding Standard Deviation =", stds[returns.index(max(returns))])
-
 i = 0
 while True: #Use the number of iterations you seem fit
     i += 1
     weights = weightscreator(stocks_lr)
     print(i)
-    if (portfolioreturn(weights) >= max(returns)):
+    if (portfolioreturn(weights) >= max(returns) * 0.75):
         weight_new = weights
         print("Your Efficient Portfolio is:",weight_new) #Returns portfolio weights for above condition being satisfied
         break
@@ -123,7 +116,10 @@ print(sum(weight_new))
 
 print("Returns corresponding to weights found :",portfolioreturn(weight_new)) #Prints return of found weights
 print("Risk associated with weights found :",portfoliostd(weight_new)) #Prints Risk of found weights
-         
+
+
+print("Max return =", max(returns))
+print("Corresponding Standard Deviation =", stds[returns.index(max(returns))])
 
 plt.scatter(stds,returns,c="red",s=0.2,alpha=0.75) #Customise size according to number of iterations being plotter
 plt.scatter(stds[returns.index(max(returns))], max(returns),c = "green", s=3) #Customise size for this too
@@ -135,6 +131,11 @@ plt.xlabel("Portfoliostd(Risk)", fontsize = 15)
 plt.ylabel("Portfolioreturn(Return)", fontsize = 15)
 plt.figure(figsize=(30,20))
 plt.show()
+
+
+
+         
+
 
 
 
