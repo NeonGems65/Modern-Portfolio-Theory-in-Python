@@ -10,6 +10,7 @@ import yfinance as yf
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import csv
 
 
 # # Downloading Financial Data
@@ -17,7 +18,7 @@ import matplotlib.pyplot as plt
 # In[2]:
 
 
-stocks = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","REGN","ASML","MSFT","NOW","SNOW","SPY"]
+stocksList = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","ASML","MSFT","NOW","SNOW","QQQ", "SCHD", "SPY"]
 
 
 
@@ -25,7 +26,7 @@ stocks = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","REGN","ASML","MSFT"
 
 #Any random number of stocks can be added or dropped(Make sure to also edit portfoliostd function accordingly)
 
-stocks = yf.download(stocks, start = "2023-01-01", end = "2024-10-02")
+stocks = yf.download(stocksList, start = "2022-01-01", end = "2024-10-06")
 #Start and End time can be configured
 
 
@@ -84,7 +85,7 @@ returns = []
 stds = []
 w = []
 
-for i in range(10000): #Use the number of iterations you seem fit
+for i in range(100): #Use the number of iterations you seem fit
     print(i)
     weights = weightscreator(stocks_lr)
     returns.append(portfolioreturn(weights))
@@ -102,17 +103,21 @@ for i in range(10000): #Use the number of iterations you seem fit
 
 # In[9]:
 
-i = 0
-while True: #Use the number of iterations you seem fit
-    i += 1
-    weights = weightscreator(stocks_lr)
-    print(i)
-    if (portfolioreturn(weights) >= max(returns) * 0.75):
-        weight_new = weights
-        print("Your Efficient Portfolio is:",weight_new) #Returns portfolio weights for above condition being satisfied
-        break
+
+allWeights = []
+for i in range(20):
+    j = 0
+    while True: #Use the number of iterations you seem fit
+        j += 1
+        weights = weightscreator(stocks_lr)
+        print(i)
+        if (portfolioreturn(weights) >= max(returns)):
+            weight_new = weights
+            print("Your Efficient Portfolio is:",weight_new) #Returns portfolio weights for above condition being satisfied
+            allWeights.append(weight_new)
+            break
+            
     
-print(sum(weight_new))
 
 print("Returns corresponding to weights found :",portfolioreturn(weight_new)) #Prints return of found weights
 print("Risk associated with weights found :",portfoliostd(weight_new)) #Prints Risk of found weights
@@ -120,6 +125,14 @@ print("Risk associated with weights found :",portfoliostd(weight_new)) #Prints R
 
 print("Max return =", max(returns))
 print("Corresponding Standard Deviation =", stds[returns.index(max(returns))])
+
+print(allWeights)
+print('huh')
+print(allWeights[0][3])
+with open('MPT_Results.csv', 'w', newline="") as f:
+    csvWriter = csv.writer(f)
+    for i in range(len(stocksList)):
+        csvWriter.writerow([stocksList[i]] + [allWeights[0][i]] + [allWeights[1][i]] + [allWeights[2][i]] + [allWeights[3][i]] + [allWeights[4][i]] + [allWeights[5][i]] + [allWeights[6][i]] + [allWeights[7][i]] + [allWeights[8][i]] + [allWeights[9][i]] + [allWeights[10][i]] + [allWeights[11][i]] + [allWeights[12][i]] + [allWeights[13][i]] + [allWeights[14][i]] + [allWeights[15][i]] + [allWeights[16][i]] + [allWeights[17][i]] + [allWeights[18][i]] + [allWeights[19][i]])
 
 plt.scatter(stds,returns,c="red",s=0.2,alpha=0.75) #Customise size according to number of iterations being plotter
 plt.scatter(stds[returns.index(max(returns))], max(returns),c = "green", s=3) #Customise size for this too
@@ -132,6 +145,7 @@ plt.ylabel("Portfolioreturn(Return)", fontsize = 15)
 plt.figure(figsize=(30,20))
 plt.show()
 
+  
 
 
          
