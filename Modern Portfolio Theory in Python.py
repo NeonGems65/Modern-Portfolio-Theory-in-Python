@@ -18,8 +18,8 @@ import csv
 # In[2]:
 
 
-stocksList = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","ASML","MSFT","NOW","SNOW","QQQ", "SCHD", "SPY"]
-
+# stocksList = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","ASML","MSFT","NOW","NVDA","SNOW","QQQ", "SCHD", "SPY"]
+stocksList= ["VCR","VFH","SMH","VGT","QQQ","SCHD","SPY","VONG"]
 
 
 # stocks = ["HDFCBANK.NS", "ICICIBANK.NS", "AXISBANK.NS", "SBIN.NS"]
@@ -85,7 +85,7 @@ returns = []
 stds = []
 w = []
 
-for i in range(100): #Use the number of iterations you seem fit
+for i in range(100000): #Use the number of iterations you seem fit
     print(i)
     weights = weightscreator(stocks_lr)
     returns.append(portfolioreturn(weights))
@@ -111,7 +111,7 @@ for i in range(20):
         j += 1
         weights = weightscreator(stocks_lr)
         print(i)
-        if (portfolioreturn(weights) >= max(returns)):
+        if (portfolioreturn(weights) >= max(returns) * 0.75) and (portfoliostd(weights) <= min(stds) * 1.25):
             weight_new = weights
             print("Your Efficient Portfolio is:",weight_new) #Returns portfolio weights for above condition being satisfied
             allWeights.append(weight_new)
