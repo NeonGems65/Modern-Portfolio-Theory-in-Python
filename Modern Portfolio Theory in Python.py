@@ -18,15 +18,18 @@ import csv
 # In[2]:
 
 
-# stocksList = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","ASML","MSFT","NOW","NVDA","SNOW","QQQ", "SCHD", "SPY"]
-stocksList= ["VCR","VFH","SMH","VGT","QQQ","SCHD","SPY","VONG"]
-
+# stocksList = ["CZR","SONY","TSLA","LAZ","MS","UBS","ILMN","IQV","ASML","MSFT","NOW","NVDA","SNOW"]
+# New Etfs
+# stocksList= ["XLF", "XLY" "VHT", "SMH","VGT","QQQ","SCHD","SPY"]
+stocksList = ["XLF", "XLY", "VHT" , "SMH" , "SPY", "VGT", "QQQ", "SCHD"]
+# Old Etfs
+# stocksList= ["VCR","VFH","SMH","VGT","QQQ","SCHD","SPY","VONG"]
 
 # stocks = ["HDFCBANK.NS", "ICICIBANK.NS", "AXISBANK.NS", "SBIN.NS"]
 
 #Any random number of stocks can be added or dropped(Make sure to also edit portfoliostd function accordingly)
 
-stocks = yf.download(stocksList, start = "2022-01-01", end = "2024-10-06")
+stocks = yf.download(stocksList, start = "2021-01-01", end = "2024-11-23")
 #Start and End time can be configured
 
 
@@ -111,7 +114,11 @@ for i in range(20):
         j += 1
         weights = weightscreator(stocks_lr)
         print(i)
-        if (portfolioreturn(weights) >= max(returns) * 0.75) and (portfoliostd(weights) <= min(stds) * 1.25):
+        print(portfolioreturn(weights))
+        print(max(returns))
+        ## IF YOU CHANGE THIS IF STATEMENT BELOW...
+        # CHANGE THE RISK MAX/RETURN MIN POINT ON THE GRAPH TO REFLECT THIS!!!!!! 
+        if (portfolioreturn(weights) >= max(returns) * 0.75) and (portfoliostd(weights) <= min(stds) * 1.15):
             weight_new = weights
             print("Your Efficient Portfolio is:",weight_new) #Returns portfolio weights for above condition being satisfied
             allWeights.append(weight_new)
@@ -139,6 +146,8 @@ plt.scatter(stds[returns.index(max(returns))], max(returns),c = "green", s=3) #C
 plt.text(stds[returns.index(max(returns))],max(returns),"Maximum Return", fontsize=7) #Customise font size for this too
 plt.scatter(min(stds),returns[stds.index(min(stds))] ,c = "blue", s=3) #Customise size for this too
 plt.text(min(stds),returns[stds.index(min(stds))],"Minimum Variance", fontsize=7) #Customise font size for this too
+plt.scatter(min(stds) * 1.15, max(returns) * 0.75)
+plt.text(min(stds) * 1.15, max(returns) * 0.75, "Risk Maximum/Return Minimum")
 plt.title("Efficient Frontier", fontsize = 20)
 plt.xlabel("Portfoliostd(Risk)", fontsize = 15)
 plt.ylabel("Portfolioreturn(Return)", fontsize = 15)
