@@ -23,6 +23,8 @@ import csv
 # stocksList= ["XLF", "XLY" "VHT", "SMH","VGT","QQQ","SCHD","SPY"]
 stocksList = ["XLF", "XLY", "VHT" , "SMH" , "SPY", "VGT", "QQQ", "SCHD"]
 # Old Etfs
+percentMaxReturn = 0.75
+percentMinRisk = 1.15
 # stocksList= ["VCR","VFH","SMH","VGT","QQQ","SCHD","SPY","VONG"]
 
 # stocks = ["HDFCBANK.NS", "ICICIBANK.NS", "AXISBANK.NS", "SBIN.NS"]
@@ -118,7 +120,7 @@ for i in range(20):
         print(max(returns))
         ## IF YOU CHANGE THIS IF STATEMENT BELOW...
         # CHANGE THE RISK MAX/RETURN MIN POINT ON THE GRAPH TO REFLECT THIS!!!!!! 
-        if (portfolioreturn(weights) >= max(returns) * 0.75) and (portfoliostd(weights) <= min(stds) * 1.15):
+        if (portfolioreturn(weights) >= max(returns) * percentMaxReturn) and (portfoliostd(weights) <= min(stds) * percentMinRisk):
             weight_new = weights
             print("Your Efficient Portfolio is:",weight_new) #Returns portfolio weights for above condition being satisfied
             allWeights.append(weight_new)
@@ -146,8 +148,8 @@ plt.scatter(stds[returns.index(max(returns))], max(returns),c = "green", s=3) #C
 plt.text(stds[returns.index(max(returns))],max(returns),"Maximum Return", fontsize=7) #Customise font size for this too
 plt.scatter(min(stds),returns[stds.index(min(stds))] ,c = "blue", s=3) #Customise size for this too
 plt.text(min(stds),returns[stds.index(min(stds))],"Minimum Variance", fontsize=7) #Customise font size for this too
-plt.scatter(min(stds) * 1.15, max(returns) * 0.75)
-plt.text(min(stds) * 1.15, max(returns) * 0.75, "Risk Maximum/Return Minimum")
+plt.scatter(min(stds) * percentMinRisk, max(returns) * percentMaxReturn)
+plt.text(min(stds) * percentMinRisk, max(returns) * percentMaxReturn, "Risk Maximum/Return Minimum")
 plt.title("Efficient Frontier", fontsize = 20)
 plt.xlabel("Portfoliostd(Risk)", fontsize = 15)
 plt.ylabel("Portfolioreturn(Return)", fontsize = 15)
